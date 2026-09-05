@@ -1,0 +1,17 @@
+# Derleme bağlamına GİRMEYECEKLER.
+# Bunlar kopyalanırsa hem yavaş hem de gereksiz disk kullanımı.
+node_modules
+.next
+dist
+.git
+.github
+.env
+.env.*
+!.env.example
+*.log
+*.tar.gz
+README.md
+.vscode
+.idea
+coverage
+.DS_Store

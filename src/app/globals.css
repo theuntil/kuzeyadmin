@@ -1,0 +1,290 @@
+@import "tailwindcss";
+
+/* ═══════════════════════════════════════════════════════════════════
+   KUZEYBATI HABER — YÖNETİM PANELİ · TASARIM SİSTEMİ
+
+   ┌─ VURGU RENGİ NÖTR ⚠️ ────────────────────────────────────────┐
+   │ Birincil eylem rengi TERS ZEMİN:                               │
+   │   açık temada  → SİYAH düğme, beyaz yazı                       │
+   │   koyu temada  → BEYAZ düğme, siyah yazı                       │
+   │                                                                 │
+   │ Renkli marka vurgusu (yeşil/kırmızı) BİLEREK YOK. Haber        │
+   │ panelinde ekran zaten kategori etiketleri, durum rozetleri ve  │
+   │ grafiklerle dolu; buna bir de marka rengi eklenince hangisinin │
+   │ "asıl eylem" olduğu kayboluyor.                                │
+   │                                                                 │
+   │ Renk yalnızca ANLAM taşıdığında kullanılır:                    │
+   │   yeşil   → onaylandı, sağlıklı                                │
+   │   turuncu → bekliyor, uyarı                                    │
+   │   kırmızı → hata, silme, tehlike                               │
+   └─────────────────────────────────────────────────────────────────┘
+
+   Biçim dili: geniş köşe yarıçapı (panel 26px, kart 20px), tam
+   yuvarlak düğmeler, kenarlık yerine ton farkı + geniş yumuşak
+   gölge. Sıkı harf aralıklı başlıklar.
+   ═══════════════════════════════════════════════════════════════════ */
+
+:root, [data-theme="light"] {
+  /* ── Zeminler ── */
+  --bg:#f6f6f7; --page:#ffffff; --surface:#f6f6f7;
+
+  /* ── Yazı: siyah ve nötr griler. Renkli metin vurguyu çalar. ── */
+  --ink:#0a0a0a; --ink2:#3d3d3d; --muted:#6b6b6b; --muted2:#767676;
+
+  --line:#f2f2f2; --line2:#ededed; --field:#ffffff; --chip:#f0f0f0;
+
+  /* ── Anlam renkleri (yalnızca durum bildirir) ── */
+  --green:#1a7f37; --green-soft:#e8f5ec; --on-green:#ffffff;
+  --orange:#a86400; --orange-soft:#fdf3e3; --orange-ink:#8a4d02;
+  --orange-line:#f0dcb8; --orange-bg:#fffaf2;
+  --danger:#a8200d; --danger-soft:#fdecea; --on-danger:#ffffff;
+
+  /* ── Koyu bölümler: kenar çubuğu, koyu şeritler ── */
+  --deep:#0a0a0a; --deep-ink:#f5f5f5; --deep-muted:#8f8f8f; --on-dark:#d4d4d4;
+
+  /* ★ BİRİNCİL EYLEM — ters zemin.
+       Açık temada siyah düğme. `--accent` ile `--solid` aynı:
+       tek bir birincil renk var, ikinci bir vurgu yok. */
+  --solid:#0a0a0a; --on-solid:#ffffff;
+  --accent:#0a0a0a; --accent-ink:#ffffff;
+  --accent-soft:#efefef; --accent-line:#0a0a0a;
+
+  /* Geriye dönük uyum: eski bileşenler --brand okuyor olabilir */
+  --brand:#0a0a0a; --on-brand:#ffffff;
+
+  --sidebar:#0a0a0a;
+
+  /* ── Gölge: geniş ve yumuşak; kenarlık yerine derinlik ── */
+  --shadow:0 32px 72px -44px rgba(0,0,0,.28);
+  --shadow-sm:0 1px 3px rgba(0,0,0,.07);
+  --shadow-md:0 12px 32px -16px rgba(0,0,0,.18);
+
+  --ease-kb:cubic-bezier(.22,1,.36,1);
+  --ease-ct:cubic-bezier(.22,1,.36,1);
+  --tick:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12' fill='none' stroke='%23fff' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M2.5 6.2l2.4 2.4L9.5 3.9'/%3E%3C/svg%3E");
+}
+
+[data-theme="dark"] {
+  /* ┌─ KOYU TEMA SİMSİYAH ──────────────────────────────────────┐
+     │ Saf siyah taban, nötr gri katmanlar. Gri-mavi tonlar        │
+     │ ekranı "yıkanmış" gösteriyordu.                             │
+     └─────────────────────────────────────────────────────────────┘ */
+  --bg:#000000; --page:#000000; --surface:#080808;
+  --ink:#f5f5f5; --ink2:#c4c4c4; --muted:#8f8f8f; --muted2:#757575;
+  /* ┌─ KENARLIK YOK ⚠️ ─────────────────────────────────────┐
+     │ Kartlar kenarlıkla değil TON FARKIYLA ayrılıyor. Siyah  │
+     │ zeminde ince gri çizgiler ızgara etkisi yaratıp ekranı  │
+     │ kalabalık gösteriyordu.                                  │
+     │                                                          │
+     │ `--line` görünmez (zeminle aynı); `--line2` yalnızca    │
+     │ kart İÇİNDEKİ ayraçlarda çok hafif fark ediliyor.       │
+     └──────────────────────────────────────────────────────────┘ */
+  --line:#080808; --line2:#141414; --field:#121212; --chip:#161616;
+
+  --green:#3fb950; --green-soft:rgba(63,185,80,.14); --on-green:#0a0a0a;
+  --orange:#d29922; --orange-soft:rgba(210,153,34,.14); --orange-ink:#e3b341;
+  --orange-line:rgba(210,153,34,.3); --orange-bg:rgba(210,153,34,.07);
+  --danger:#ff7a6a; --danger-soft:rgba(255,122,106,.14); --on-danger:#0a0a0a;
+
+  --deep:#000000; --deep-ink:#f5f5f5; --deep-muted:#8f8f8f; --on-dark:#d4d4d4;
+
+  /* ★ Koyu temada birincil düğme BEYAZ — tam tersi. */
+  --solid:#f5f5f5; --on-solid:#0a0a0a;
+  --accent:#f5f5f5; --accent-ink:#0a0a0a;
+  --accent-soft:rgba(245,245,245,.12); --accent-line:#f5f5f5;
+  --brand:#f5f5f5; --on-brand:#0a0a0a;
+
+  --sidebar:#000000;
+
+  --shadow:0 32px 72px -44px rgba(0,0,0,.9);
+  --shadow-sm:0 1px 3px rgba(0,0,0,.6);
+  --shadow-md:0 12px 32px -16px rgba(0,0,0,.7);
+}
+
+@theme inline {
+  --color-bg:var(--bg); --color-page:var(--page); --color-surface:var(--surface);
+  --color-ink:var(--ink); --color-ink2:var(--ink2);
+  --color-muted:var(--muted); --color-muted2:var(--muted2);
+  --color-line:var(--line); --color-line2:var(--line2);
+  --color-field:var(--field); --color-chip:var(--chip);
+  --color-green:var(--green); --color-green-soft:var(--green-soft); --color-on-green:var(--on-green);
+  --color-orange:var(--orange); --color-orange-soft:var(--orange-soft);
+  --color-orange-ink:var(--orange-ink); --color-orange-line:var(--orange-line);
+  --color-orange-bg:var(--orange-bg);
+  --color-danger:var(--danger); --color-danger-soft:var(--danger-soft); --color-on-danger:var(--on-danger);
+  --color-deep:var(--deep); --color-deep-ink:var(--deep-ink);
+  --color-deep-muted:var(--deep-muted); --color-on-dark:var(--on-dark);
+  --color-solid:var(--solid); --color-on-solid:var(--on-solid);
+  --color-accent:var(--accent); --color-accent-ink:var(--accent-ink);
+  --color-accent-soft:var(--accent-soft); --color-accent-line:var(--accent-line);
+  --color-brand:var(--brand); --color-on-brand:var(--on-brand);
+  --color-sidebar:var(--sidebar);
+  --font-sans:ui-sans-serif, system-ui, -apple-system, "Inter", sans-serif;
+  --font-display:ui-sans-serif, system-ui, -apple-system, "Inter", sans-serif;
+  --radius-card:20px; --radius-panel:26px; --radius-field:12px;
+}
+
+* { box-sizing:border-box; }
+
+html {
+  scroll-behavior:smooth;
+  -webkit-text-size-adjust:100%;
+  /* Sayfa geçişlerinde beyaz flaş olmasın diye kök de boyanır */
+  background:var(--page);
+  color-scheme:light;
+}
+html[data-theme="dark"] { color-scheme:dark; }
+
+body {
+  margin:0; min-height:100dvh;
+  background:var(--page); color:var(--ink);
+  font-family:var(--font-sans);
+  -webkit-font-smoothing:antialiased;
+  text-rendering:optimizeLegibility;
+}
+
+::selection { background:var(--solid); color:var(--on-solid); }
+:focus-visible { outline:2px solid var(--accent-line); outline-offset:2px; border-radius:6px; }
+
+/* ═══════════════════════════════════════════════════════════════════
+   TİPOGRAFİ ÖLÇEĞİ
+
+   Başlıklar büyük ve SIKI: büyüdükçe artan negatif harf aralığı.
+   Küçük puntoda negatif aralık okunurluğu bozar, o yüzden ölçek
+   küçüldükçe normale döner.
+
+   Panelde başlıklar sitedeki kadar büyük değil — ekran veri
+   gösteriyor, pazarlama yapmıyor.
+   ═══════════════════════════════════════════════════════════════════ */
+.kb-h1{ font-family:var(--font-display); font-weight:700;
+        font-size:clamp(26px,3.4vw,38px); line-height:1.06; letter-spacing:-.035em; }
+.kb-h2{ font-family:var(--font-display); font-weight:700;
+        font-size:clamp(21px,2.5vw,27px); line-height:1.14; letter-spacing:-.028em; }
+.kb-h3{ font-family:var(--font-display); font-weight:600;
+        font-size:clamp(16.5px,1.7vw,19px); line-height:1.28; letter-spacing:-.018em; }
+.kb-eyebrow{ font-size:11px; font-weight:700; letter-spacing:.14em;
+             text-transform:uppercase; color:var(--muted2); }
+
+/* Sayı gösterimi — sayaçlar ve tablolar hizalı dursun */
+.kb-num{ font-variant-numeric:tabular-nums; letter-spacing:-.02em; }
+
+/* ═══════════════════════════════════════════════════════════════════
+   ANİMASYON — sade, hızlı, GPU dostu
+
+   Hepsi aynı eğriyi kullanır. Farklı eğriler karışınca arayüz
+   "birden fazla kişi yapmış" gibi duruyor.
+   ═══════════════════════════════════════════════════════════════════ */
+@keyframes kb-rise   { from{opacity:0;transform:translate3d(0,14px,0)} to{opacity:1;transform:none} }
+@keyframes kb-fade   { from{opacity:0} to{opacity:1} }
+@keyframes kb-scale  { from{opacity:0;transform:scale(.97)} to{opacity:1;transform:scale(1)} }
+@keyframes kb-slide-down { from{opacity:0;transform:translate3d(0,-8px,0)} to{opacity:1;transform:none} }
+@keyframes kb-slide-in   { from{transform:translate3d(-100%,0,0)} to{transform:none} }
+@keyframes kb-spin   { to{transform:rotate(360deg)} }
+@keyframes kb-modal-in { from{opacity:0;transform:translate3d(0,18px,0) scale(.985)} to{opacity:1;transform:none} }
+@keyframes kb-shimmer{ 0%{background-position:-200% 0} 100%{background-position:200% 0} }
+@keyframes kb-pulse  { 0%,100%{opacity:1} 50%{opacity:.45} }
+
+.kb-rise{ animation:kb-rise .42s var(--ease-kb) both }
+.kb-fade{ animation:kb-fade .3s ease both }
+.kb-scale{ animation:kb-scale .28s var(--ease-kb) both }
+.kb-slide-down{ animation:kb-slide-down .22s var(--ease-kb) both }
+.kb-slide-in{ animation:kb-slide-in .25s var(--ease-kb) both }
+.kb-spin{ animation:kb-spin .7s linear infinite }
+.kb-pulse{ animation:kb-pulse 1.8s ease-in-out infinite }
+
+/* Listeler sırayla belirsin — hepsi birden zıplarsa göz kaybeder */
+.kb-stagger > *{ animation:kb-rise .42s var(--ease-kb) both }
+.kb-stagger > *:nth-child(1){animation-delay:.02s}
+.kb-stagger > *:nth-child(2){animation-delay:.06s}
+.kb-stagger > *:nth-child(3){animation-delay:.1s}
+.kb-stagger > *:nth-child(4){animation-delay:.14s}
+.kb-stagger > *:nth-child(5){animation-delay:.18s}
+.kb-stagger > *:nth-child(6){animation-delay:.22s}
+.kb-stagger > *:nth-child(7){animation-delay:.26s}
+.kb-stagger > *:nth-child(8){animation-delay:.3s}
+.kb-stagger > *:nth-child(n+9){animation-delay:.34s}
+
+.kb-skeleton{
+  background:linear-gradient(90deg,var(--chip) 25%,var(--line2) 37%,var(--chip) 63%);
+  background-size:400% 100%;
+  animation:kb-shimmer 1.3s ease-in-out infinite;
+}
+
+/* Düğme basılma hissi */
+.kb-lift{ transition:transform .15s var(--ease-kb), box-shadow .15s var(--ease-kb) }
+.kb-lift:active{ transform:scale(.975) }
+
+/* Üstten inen bildirim */
+@keyframes kb-toast-in { from{opacity:0;transform:translate3d(0,-14px,0) scale(.97)} to{opacity:1;transform:none} }
+@keyframes kb-toast-out{ from{opacity:1;transform:none} to{opacity:0;transform:translate3d(0,-14px,0) scale(.97)} }
+.kb-toast-in { animation:kb-toast-in .22s var(--ease-kb) both }
+.kb-toast-out{ animation:kb-toast-out .2s ease-in both }
+
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{
+    animation-duration:.01ms !important; animation-iteration-count:1 !important;
+    transition-duration:.01ms !important; scroll-behavior:auto !important;
+  }
+}
+
+/* ── Kaydırma çubuğu ── */
+.kb-scrollbar::-webkit-scrollbar{width:10px;height:10px}
+.kb-scrollbar::-webkit-scrollbar-track{background:transparent}
+.kb-scrollbar::-webkit-scrollbar-thumb{
+  background:var(--line); border-radius:999px; border:3px solid var(--page);
+}
+[data-theme="dark"] .kb-scrollbar::-webkit-scrollbar-thumb{ border-color:var(--deep) }
+
+/* Sayı alanlarındaki artır/azalt oklarını kaldır — tabloda yer yiyor */
+input[type=number]::-webkit-inner-spin-button,
+input[type=number]::-webkit-outer-spin-button{ appearance:none; margin:0 }
+input[type=number]{ -moz-appearance:textfield }
+
+/* Tema duyarlı logo */
+.kb-logo-light{ display:block }
+.kb-logo-dark { display:none }
+[data-theme="dark"] .kb-logo-light{ display:none }
+[data-theme="dark"] .kb-logo-dark { display:block }
+
+/* ═══════════════════════════════════════════════════════════════════
+   ESKİ SINIF ADLARI — geriye dönük uyum
+
+   Bazı bileşenler hâlâ `ct-` önekli sınıfları çağırıyor. Yeniden
+   adlandırma tek seferde yapılamadığı için eskiler yenilere
+   bağlandı; ikisi de çalışır, yeni kod `kb-` kullanır.
+   ═══════════════════════════════════════════════════════════════════ */
+.ct-spin{ animation:kb-spin .7s linear infinite }
+.ct-fade{ animation:kb-fade .3s ease both }
+.ct-rise{ animation:kb-rise .42s var(--ease-kb) both }
+.ct-scale{ animation:kb-scale .28s var(--ease-kb) both }
+.ct-slide-down{ animation:kb-slide-down .22s var(--ease-kb) both }
+.ct-toast-in { animation:kb-toast-in .22s var(--ease-kb) both }
+.ct-toast-out{ animation:kb-toast-out .2s ease-in both }
+.ct-skeleton{
+  background:linear-gradient(90deg,var(--chip) 25%,var(--line2) 37%,var(--chip) 63%);
+  background-size:400% 100%; animation:kb-shimmer 1.3s ease-in-out infinite;
+}
+.ct-scrollbar::-webkit-scrollbar{width:10px;height:10px}
+.ct-scrollbar::-webkit-scrollbar-track{background:transparent}
+.ct-scrollbar::-webkit-scrollbar-thumb{
+  background:var(--line); border-radius:999px; border:3px solid var(--page);
+}
+.ct-eyebrow{ font-size:11px; font-weight:700; letter-spacing:.14em;
+             text-transform:uppercase; color:var(--muted2) }
+.ct-h1{ font-family:var(--font-display); font-weight:700;
+        font-size:clamp(26px,3.4vw,38px); line-height:1.06; letter-spacing:-.035em }
+.ct-h2{ font-family:var(--font-display); font-weight:700;
+        font-size:clamp(21px,2.5vw,27px); line-height:1.14; letter-spacing:-.028em }
+.ct-h3{ font-family:var(--font-display); font-weight:600;
+        font-size:clamp(16.5px,1.7vw,19px); line-height:1.28; letter-spacing:-.018em }
+
+/* ---- Ayar penceresi giriş animasyonları --------------------
+   Mobilde alttan kayarak, masaüstünde hafif büyüyerek. */
+@keyframes kb-sheet-in {
+  from { transform: translateY(100%); }
+  to   { transform: translateY(0); }
+}
+@keyframes kb-pop-in {
+  from { opacity: 0; transform: scale(.96); }
+  to   { opacity: 1; transform: scale(1); }
+}
