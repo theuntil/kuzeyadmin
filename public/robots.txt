@@ -1,0 +1,3 @@
+# Yönetim paneli hiçbir koşulda dizine eklenmemeli
+User-agent: *
+Disallow: /
